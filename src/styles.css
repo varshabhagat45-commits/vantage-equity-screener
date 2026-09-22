@@ -1,0 +1,85 @@
+@import "tailwindcss";
+
+/*
+  Vantage — design tokens
+  Maps to the utility classes already used across src/components/ui:
+  bg-accent, text-accent-fg, bg-accent-soft, text-accent, border-border,
+  bg-surface, text-fg, bg-bg-subtle, text-muted, bg-down-soft, text-down,
+  bg-up-soft, text-up, text-subtle, bg-bg, shadow-card
+*/
+@theme {
+  --color-bg: #f7f9fb;
+  --color-bg-subtle: #eef2f5;
+  --color-surface: #ffffff;
+  --color-border: #e2e8ee;
+
+  --color-fg: #12202b;
+  --color-muted: #5b6b76;
+  --color-subtle: #8a97a1;
+
+  --color-accent: #1c4e6a;
+  --color-accent-fg: #ffffff;
+  --color-accent-soft: #e3edf2;
+
+  --color-up: #157347;
+  --color-up-soft: #e3f5ea;
+  --color-down: #b3261e;
+  --color-down-soft: #fbe6e5;
+
+  --shadow-card: 0 1px 2px rgba(18, 32, 43, 0.06), 0 2px 8px rgba(18, 32, 43, 0.06);
+}
+
+/* Dark mode: flip the same token set when the OS/browser prefers dark */
+@media (prefers-color-scheme: dark) {
+  @theme {
+    --color-bg: #0c1418;
+    --color-bg-subtle: #131f26;
+    --color-surface: #101a20;
+    --color-border: #223038;
+
+    --color-fg: #eef3f6;
+    --color-muted: #9aa8b1;
+    --color-subtle: #6b7982;
+
+    --color-accent: #4a90b8;
+    --color-accent-fg: #06141c;
+    --color-accent-soft: #17313e;
+
+    --color-up: #34c37f;
+    --color-up-soft: #103524;
+    --color-down: #f16a63;
+    --color-down-soft: #3a1614;
+
+    --shadow-card: 0 1px 2px rgba(0, 0, 0, 0.4), 0 2px 8px rgba(0, 0, 0, 0.35);
+  }
+}
+
+@layer base {
+  * {
+    border-color: var(--color-border);
+  }
+
+  html,
+  body {
+    background-color: var(--color-bg);
+    color: var(--color-fg);
+  }
+
+  body {
+    font-feature-settings: "tnum" 1, "cv11" 1;
+  }
+
+  ::selection {
+    background-color: var(--color-accent-soft);
+    color: var(--color-accent);
+  }
+}
+
+@layer utilities {
+  .card {
+    background-color: var(--color-surface);
+    border: 1px solid var(--color-border);
+    border-radius: 0.75rem;
+    box-shadow: var(--shadow-card);
+  }
+}
