@@ -7,9 +7,9 @@ export function inrPrice(n: number) {
 }
 
 export function crore(n: number) {
-  if (n >= 100000) return `\u20b9${(n / 100000).toFixed(2)} L Cr`;
-  if (n >= 1000) return `\u20b9${(n / 1000).toFixed(1)}k Cr`;
-  return `\u20b9${Math.round(n).toLocaleString("en-IN")} Cr`;
+  if (n >= 100000) return `₹${(n / 100000).toFixed(2)} L Cr`;
+  if (n >= 1000) return `₹${(n / 1000).toFixed(1)}k Cr`;
+  return `₹${Math.round(n).toLocaleString("en-IN")} Cr`;
 }
 
 export function pct(n: number, digits = 1) {
