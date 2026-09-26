@@ -1,52 +1,66 @@
 import { createFileRoute } from "@tanstack/react-router";
-import { Search } from "lucide-react";
-import { Badge } from "@/components/ui/badge";
-import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
+import { AppHeader } from "@/components/app-header";
+import { QuickFilters } from "@/components/quick-filters";
+import { QueryPanel } from "@/components/query-panel";
+import { ResultsTable } from "@/components/results-table";
+import { StockDetail } from "@/components/stock-detail";
+import { UniverseBar } from "@/components/universe-bar";
+import { selectStocks } from "@/lib/select";
+import { useScreener } from "@/lib/store";
+import { useLiveUniverse } from "@/lib/use-live-universe";
 
 export const Route = createFileRoute("/")({ component: Home });
 
-const FILTERS = ["ROE > 15%", "D/E < 0.5", "PEG < 1.5", "Promoter holding > 50%"];
-
 function Home() {
+  const selected = useScreener((s) => s.selected);
+  const queryText = useScreener((s) => s.queryText);
+  const mode = useScreener((s) => s.mode);
+  const universe = useScreener((s) => s.universe);
+  const sector = useScreener((s) => s.sector);
+  const search = useScreener((s) => s.search);
+  const watch = useScreener((s) => s.watch);
+  const watchOnly = useScreener((s) => s.watchOnly);
+  const sortKey = useScreener((s) => s.sortKey);
+  const sortDir = useScreener((s) => s.sortDir);
+  const stocks = useLiveUniverse();
+
+  const { rows, universeSize } = selectStocks({
+    selected,
+    mode,
+    queryText,
+    universe,
+    sector,
+    search,
+    watch,
+    watchOnly,
+    sortKey,
+    sortDir,
+    stocks,
+  });
+
   return (
-    <main className="mx-auto flex min-h-dvh max-w-5xl flex-col gap-8 px-6 py-12">
-      <header className="flex items-center gap-2.5">
-        <span className="flex size-8 items-center justify-center rounded-sm bg-accent text-accent-fg font-display text-sm font-semibold">
-          V
-        </span>
-        <span className="leading-tight">
-          <span className="block font-display text-sm font-semibold tracking-tight">Vantage</span>
-          <span className="block text-xs text-muted">Equity screener</span>
-        </span>
-      </header>
-
-      <section>
-        <h1 className="font-display text-3xl font-semibold tracking-tight">
-          Buy excellent businesses. Pay a sane price.
-        </h1>
-        <p className="mt-2 max-w-2xl text-sm text-muted">
-          Screen Indian listed companies on quality, value, and ownership. The full live NSE
-          screener is shipping next. Not investment advice.
-        </p>
-      </section>
-
-      <section className="rounded-xl border border-border bg-surface p-5 shadow-card">
-        <div className="flex flex-col gap-3 sm:flex-row">
-          <div className="relative flex-1">
-            <Search className="pointer-events-none absolute left-3 top-1/2 size-4 -translate-y-1/2 text-subtle" />
-            <Input placeholder="Search ticker or name" className="pl-9" />
-          </div>
-          <Button>Run Screen</Button>
+    <div className="min-h-dvh bg-bg">
+      <AppHeader />
+      <main className="mx-auto flex max-w-7xl flex-col gap-5 px-4 py-6 sm:px-6 sm:py-8">
+        <div>
+          <p className="text-xs font-medium uppercase tracking-wider text-muted">
+            NSE last prices · refreshed through the day
+          </p>
+          <h1 className="mt-1 font-display text-2xl font-semibold tracking-tight sm:text-3xl">
+            Buy excellent businesses. Pay a sane price.
+          </h1>
+          <p className="mt-2 max-w-2xl text-sm text-muted sm:text-base">
+            The wealth screen grades profitability, growth, leverage, liquidity, and PEG — then
+            keeps names that can compound. Last prices update from the exchange feed; ratios
+            scale with price until the next filing. Not advice.
+          </p>
         </div>
-        <div className="mt-4 flex flex-wrap gap-2">
-          {FILTERS.map((filter) => (
-            <Badge key={filter} variant="muted">
-              {filter}
-            </Badge>
-          ))}
-        </div>
-      </section>
-    </main>
+        <QuickFilters stocks={stocks} />
+        <QueryPanel matchCount={rows.length} universeSize={universeSize} />
+        <UniverseBar />
+        <ResultsTable rows={rows} />
+      </main>
+      <StockDetail stocks={stocks} />
+    </div>
   );
 }

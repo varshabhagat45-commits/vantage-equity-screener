@@ -2,7 +2,10 @@ import { enrich } from "./ratios";
 import { STOCKS } from "./stocks";
 import type { CoreStock, Stock } from "./types";
 
-export type QuotePatch = { price: number; chg1d: number };
+export type QuotePatch = {
+  price: number;
+  chg1d: number;
+};
 
 function coreOf(stock: Stock): CoreStock {
   return {
@@ -36,7 +39,11 @@ function coreOf(stock: Stock): CoreStock {
   };
 }
 
-export function applyLiveQuotes(quotes: Record<string, QuotePatch>, universe: Stock[] = STOCKS): Stock[] {
+/** Scale valuation fields with the live price; fundamentals stay as last filed. */
+export function applyLiveQuotes(
+  quotes: Record<string, QuotePatch>,
+  universe: Stock[] = STOCKS,
+): Stock[] {
   return universe.map((stock) => {
     const q = quotes[stock.ticker];
     if (!q || !(q.price > 0) || !(stock.price > 0)) return stock;
@@ -48,7 +55,9 @@ export function applyLiveQuotes(quotes: Record<string, QuotePatch>, universe: St
     raw.marketCap = stock.marketCap * factor;
     if (raw.pe > 0) raw.pe = Math.round(raw.pe * factor * 10) / 10;
     if (raw.pb > 0) raw.pb = Math.round(raw.pb * factor * 10) / 10;
-    if (raw.dividendYield > 0) raw.dividendYield = Math.round((raw.dividendYield / factor) * 10) / 10;
+    if (raw.dividendYield > 0) {
+      raw.dividendYield = Math.round((raw.dividendYield / factor) * 10) / 10;
+    }
     return enrich(raw);
   });
 }

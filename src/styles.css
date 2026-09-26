@@ -1,85 +1,242 @@
+@import url("https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:ital,wght@0,400;0,500;0,600;1,400&family=Plus+Jakarta+Sans:wght@500;600;700&display=swap");
 @import "tailwindcss";
+@import "tw-animate-css";
 
-/*
-  Vantage — design tokens
-  Maps to the utility classes already used across src/components/ui:
-  bg-accent, text-accent-fg, bg-accent-soft, text-accent, border-border,
-  bg-surface, text-fg, bg-bg-subtle, text-muted, bg-down-soft, text-down,
-  bg-up-soft, text-up, text-subtle, bg-bg, shadow-card
-*/
 @theme {
-  --color-bg: #f7f9fb;
-  --color-bg-subtle: #eef2f5;
+  --color-bg: #f1f4f8;
+  --color-bg-subtle: #e7edf4;
   --color-surface: #ffffff;
-  --color-border: #e2e8ee;
-
-  --color-fg: #12202b;
-  --color-muted: #5b6b76;
-  --color-subtle: #8a97a1;
-
+  --color-fg: #12161c;
+  --color-muted: #5a6778;
+  --color-subtle: #8793a3;
   --color-accent: #1c4e6a;
-  --color-accent-fg: #ffffff;
-  --color-accent-soft: #e3edf2;
+  --color-accent-fg: #f4f8fb;
+  --color-accent-soft: #d7e6ef;
+  --color-border: #d5dde6;
+  --color-border-strong: #b7c3d0;
+  --color-up: #0f6b4a;
+  --color-up-soft: #d7f0e4;
+  --color-down: #b42318;
+  --color-down-soft: #fde4e1;
+  --color-warn: #9a6700;
 
-  --color-up: #157347;
-  --color-up-soft: #e3f5ea;
-  --color-down: #b3261e;
-  --color-down-soft: #fbe6e5;
+  --color-tint-gold: #fbf3c0;
+  --color-tint-gold-fg: #7a5b10;
+  --color-tint-blue: #d7ebfc;
+  --color-tint-blue-fg: #1e5a8a;
+  --color-tint-peach: #fde3c8;
+  --color-tint-peach-fg: #9a4a12;
+  --color-tint-mint: #cdeddd;
+  --color-tint-mint-fg: #0f6b4a;
+  --color-tint-ink: #dce6ee;
+  --color-tint-ink-fg: #1c4e6a;
 
-  --shadow-card: 0 1px 2px rgba(18, 32, 43, 0.06), 0 2px 8px rgba(18, 32, 43, 0.06);
-}
+  --font-sans: "IBM Plex Sans", "Segoe UI", system-ui, sans-serif;
+  --font-display: "Plus Jakarta Sans", "Segoe UI", system-ui, sans-serif;
+  --font-mono: "IBM Plex Sans", ui-monospace, "SF Mono", Menlo, Consolas, monospace;
 
-/* Dark mode: flip the same token set when the OS/browser prefers dark */
-@media (prefers-color-scheme: dark) {
-  @theme {
-    --color-bg: #0c1418;
-    --color-bg-subtle: #131f26;
-    --color-surface: #101a20;
-    --color-border: #223038;
+  --radius-xs: 4px;
+  --radius-sm: 8px;
+  --radius-md: 12px;
+  --radius-lg: 16px;
+  --radius-xl: 24px;
 
-    --color-fg: #eef3f6;
-    --color-muted: #9aa8b1;
-    --color-subtle: #6b7982;
+  --shadow-card: 0 1px 2px rgb(18 22 28 / 0.04), 0 8px 24px rgb(18 22 28 / 0.04);
+  --shadow-lift: 0 8px 28px rgb(18 22 28 / 0.08);
 
-    --color-accent: #4a90b8;
-    --color-accent-fg: #06141c;
-    --color-accent-soft: #17313e;
-
-    --color-up: #34c37f;
-    --color-up-soft: #103524;
-    --color-down: #f16a63;
-    --color-down-soft: #3a1614;
-
-    --shadow-card: 0 1px 2px rgba(0, 0, 0, 0.4), 0 2px 8px rgba(0, 0, 0, 0.35);
-  }
+  --text-xs: 0.75rem;
+  --text-sm: 0.875rem;
+  --text-base: 1rem;
+  --text-lg: 1.125rem;
+  --text-xl: 1.25rem;
+  --text-2xl: 1.5rem;
+  --text-3xl: 1.875rem;
 }
 
 @layer base {
-  * {
-    border-color: var(--color-border);
+  html {
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
   }
 
   html,
-  body {
-    background-color: var(--color-bg);
+  body,
+  #app {
+    min-height: 100%;
+    background: var(--color-bg);
     color: var(--color-fg);
   }
 
   body {
-    font-feature-settings: "tnum" 1, "cv11" 1;
+    font-family: var(--font-sans);
+    line-height: 1.5;
+  }
+
+  h1,
+  h2,
+  h3 {
+    font-family: var(--font-display);
+    text-wrap: balance;
+    letter-spacing: -0.03em;
+    line-height: 1.2;
+  }
+
+  p {
+    text-wrap: pretty;
+  }
+
+  button:not(:disabled),
+  [role="button"]:not(:disabled) {
+    cursor: pointer;
   }
 
   ::selection {
-    background-color: var(--color-accent-soft);
-    color: var(--color-accent);
+    background: var(--color-accent-soft);
+    color: var(--color-fg);
   }
 }
 
 @layer utilities {
-  .card {
-    background-color: var(--color-surface);
-    border: 1px solid var(--color-border);
-    border-radius: 0.75rem;
-    box-shadow: var(--shadow-card);
+  .font-display {
+    font-family: var(--font-display);
+  }
+
+  .screener-table {
+    min-width: 56rem;
+  }
+}
+
+.filter-tile {
+  animation: tile-in 250ms cubic-bezier(0.22, 1, 0.36, 1) both;
+  animation-delay: calc(var(--i, 0) * 28ms);
+  transition:
+    background-color 180ms ease,
+    border-color 180ms ease,
+    color 180ms ease,
+    box-shadow 180ms ease,
+    transform 180ms ease;
+}
+
+.filter-tile:hover {
+  transform: translateY(-1px);
+  box-shadow: var(--shadow-lift);
+}
+
+.filter-tile[data-on="true"][data-tint="gold"] {
+  background: var(--color-tint-gold);
+  border-color: color-mix(in oklab, var(--color-tint-gold-fg) 28%, transparent);
+  color: var(--color-tint-gold-fg);
+}
+.filter-tile[data-on="true"][data-tint="blue"] {
+  background: var(--color-tint-blue);
+  border-color: color-mix(in oklab, var(--color-tint-blue-fg) 28%, transparent);
+  color: var(--color-tint-blue-fg);
+}
+.filter-tile[data-on="true"][data-tint="peach"] {
+  background: var(--color-tint-peach);
+  border-color: color-mix(in oklab, var(--color-tint-peach-fg) 28%, transparent);
+  color: var(--color-tint-peach-fg);
+}
+.filter-tile[data-on="true"][data-tint="mint"] {
+  background: var(--color-tint-mint);
+  border-color: color-mix(in oklab, var(--color-tint-mint-fg) 28%, transparent);
+  color: var(--color-tint-mint-fg);
+}
+.filter-tile[data-on="true"][data-tint="ink"] {
+  background: var(--color-tint-ink);
+  border-color: color-mix(in oklab, var(--color-tint-ink-fg) 28%, transparent);
+  color: var(--color-tint-ink-fg);
+}
+
+@keyframes tile-in {
+  from {
+    opacity: 0;
+    transform: translateY(6px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.query-pre {
+  font-variant-ligatures: none;
+}
+
+.grade-tile[data-grade="excellent"] {
+  background: var(--color-tint-blue);
+  border-color: color-mix(in oklab, var(--color-tint-blue-fg) 28%, transparent);
+  color: var(--color-tint-blue-fg);
+}
+.grade-tile[data-grade="good"],
+.grade-tile[data-grade="undervalued"] {
+  background: var(--color-tint-mint);
+  border-color: color-mix(in oklab, var(--color-tint-mint-fg) 28%, transparent);
+  color: var(--color-tint-mint-fg);
+}
+.grade-tile[data-grade="average"],
+.grade-tile[data-grade="neutral"] {
+  background: var(--color-tint-gold);
+  border-color: color-mix(in oklab, var(--color-tint-gold-fg) 28%, transparent);
+  color: var(--color-tint-gold-fg);
+}
+.grade-tile[data-grade="weak"],
+.grade-tile[data-grade="overvalued"] {
+  background: var(--color-tint-peach);
+  border-color: color-mix(in oklab, var(--color-tint-peach-fg) 28%, transparent);
+  color: var(--color-tint-peach-fg);
+}
+.grade-tile[data-grade="poor"],
+.grade-tile[data-grade="highly-overvalued"] {
+  background: var(--color-down-soft);
+  border-color: color-mix(in oklab, var(--color-down) 28%, transparent);
+  color: var(--color-down);
+}
+.grade-tile[data-grade="na"] {
+  background: var(--color-bg);
+  color: var(--color-muted);
+}
+
+.grade-pill {
+  border-color: color-mix(in oklab, currentColor 28%, transparent);
+  background: color-mix(in oklab, white 55%, transparent);
+}
+
+.verdict-banner[data-verdict="compound"] {
+  background: var(--color-tint-mint);
+  border-color: color-mix(in oklab, var(--color-tint-mint-fg) 28%, transparent);
+  color: var(--color-tint-mint-fg);
+}
+.verdict-banner[data-verdict="watch"] {
+  background: var(--color-tint-gold);
+  border-color: color-mix(in oklab, var(--color-tint-gold-fg) 28%, transparent);
+  color: var(--color-tint-gold-fg);
+}
+.verdict-banner[data-verdict="avoid"] {
+  background: var(--color-bg);
+  border-color: var(--color-border);
+  color: var(--color-muted);
+}
+
+.verdict-pill[data-verdict="compound"] {
+  background: var(--color-up-soft);
+  color: var(--color-up);
+}
+.verdict-pill[data-verdict="watch"] {
+  background: var(--color-tint-gold);
+  color: var(--color-tint-gold-fg);
+}
+.verdict-pill[data-verdict="avoid"] {
+  background: var(--color-bg-subtle);
+  color: var(--color-muted);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .filter-tile {
+    animation: none;
+    transition: none;
+  }
+  .filter-tile:hover {
+    transform: none;
   }
 }

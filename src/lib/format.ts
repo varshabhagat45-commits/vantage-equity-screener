@@ -13,7 +13,8 @@ export function crore(n: number) {
 }
 
 export function pct(n: number, digits = 1) {
-  return `${n.toFixed(digits)}%`;
+  const sign = n > 0 ? "" : "";
+  return `${sign}${n.toFixed(digits)}%`;
 }
 
 export function signedPct(n: number) {

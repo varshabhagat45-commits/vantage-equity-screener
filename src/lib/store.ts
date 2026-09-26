@@ -89,18 +89,30 @@ export const useScreener = create<ScreenerState>()(
         set(applyPresetSpec(preset, get().mode));
       },
       setMode: (mode) => set({ mode }),
-      setQuery: (queryText) => set({ queryText, selected: inferSelected(queryText) }),
+      setQuery: (queryText) =>
+        set({
+          queryText,
+          selected: inferSelected(queryText),
+        }),
       setUniverse: (universe) => set({ universe }),
       setSector: (sector) => set({ sector }),
       setSearch: (search) => set({ search }),
       setSort: (key) => {
         const { sortKey, sortDir } = get();
-        if (sortKey === key) set({ sortDir: sortDir === "asc" ? "desc" : "asc" });
-        else set({ sortKey: key, sortDir: key === "name" || key === "pe" || key === "peg" ? "asc" : "desc" });
+        if (sortKey === key) {
+          set({ sortDir: sortDir === "asc" ? "desc" : "asc" });
+        } else {
+          set({
+            sortKey: key,
+            sortDir: key === "name" || key === "pe" || key === "peg" ? "asc" : "desc",
+          });
+        }
       },
       toggleWatch: (ticker) =>
         set((s) => ({
-          watch: s.watch.includes(ticker) ? s.watch.filter((t) => t !== ticker) : [...s.watch, ticker],
+          watch: s.watch.includes(ticker)
+            ? s.watch.filter((t) => t !== ticker)
+            : [...s.watch, ticker],
         })),
       setWatchOnly: (on) => set({ watchOnly: on }),
       setActive: (ticker) => set({ activeTicker: ticker }),
@@ -115,6 +127,9 @@ export const useScreener = create<ScreenerState>()(
           marketError: payload.error ?? null,
         }),
     }),
-    { name: "vantage-screener", partialize: (s) => ({ watch: s.watch }) },
+    {
+      name: "vantage-screener",
+      partialize: (s) => ({ watch: s.watch }),
+    },
   ),
 );
